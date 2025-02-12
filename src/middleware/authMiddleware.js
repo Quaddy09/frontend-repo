@@ -1,17 +1,23 @@
-import { admin } from "../services/firebaseAdmin.js";
+import { getAuth } from "firebase/auth";
 
-export const authMiddleware = async (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1];
-
-    if (!token) {
-      return res.status(401).json({ error: "Unauthorized: No token provided" });
-    }
-
-    const decodedToken = await admin.auth().verifyIdToken(token);
-    req.user = decodedToken;
-    next();
-  } catch (error) {
-    return res.status(403).json({ error: "Forbidden: Invalid token", details: error.message });
+const fetchProtectedData = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  
+  if (user) {
+    const token = await user.getIdToken(); // Get Firebase Auth token
+    const response = await fetch("/api/protected-route", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+    const data = await response.json();
+    console.log(data);
+  } else {
+    console.log("User not authenticated");
   }
 };
+
+fetchProtectedData();
