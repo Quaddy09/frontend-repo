@@ -1,25 +1,21 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const [user, setUser] = useState<string | null>(null);
+  const [users, setUsers] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
-      return;
     }
-    setUser("Authenticated User"); // Replace with real user data if needed
-  }, []);
+  }, [router]); // ✅ Added 'router' to dependencies
 
   return (
     <div>
-      <h2>Dashboard</h2>
-      {user ? <p>Welcome, {user}!</p> : <p>Loading...</p>}
+      <h1>Dashboard</h1>
     </div>
   );
 }

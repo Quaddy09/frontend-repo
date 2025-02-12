@@ -43,3 +43,9 @@ next-env.d.ts
 node_modules/
 .next/
 .env.local
+
+node_modules/
+.env
+firebase-debug.log
+.firebase/
+serviceAccountKey.json
