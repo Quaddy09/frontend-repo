@@ -8,5 +8,6 @@ export default async function handler(
   const isAuthenticated = await authenticate(req, res);
   if (!isAuthenticated) return;
 
-  return res.status(200).json({ message: "Protected data", user: req.user });
+  // Protected route logic (Only authenticated users can access this)
+  res.status(200).json({ message: "Protected data accessed", user: req.user });
 }
